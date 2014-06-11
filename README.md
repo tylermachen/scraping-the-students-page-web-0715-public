@@ -23,7 +23,7 @@ That being said, hear are some sensible guide lines you should consider (__which
   - It will facilitate the movement of variables between methods.
     - [`attr_accessor`, `attr_writer`, and `attr_reader`](http://stackoverflow.com/questions/4370960/what-is-attr-accessor-in-ruby) will be very helpful if you use a class.
 
-Now, that you've read the guide lines feel free to disregard any or all of them as you see fit.
+Now, that you've read the guide lines feel free to disregard any or all of them as you see fit.  ___Make it work, make it right, make it fast.___
 
 ###Nokogiri
 Nokogiri is a ruby gem that is designed specifically for scraping websites.  Nokogiri will parse the infromation into XML nodes, which will allow you to move through the document by selecting nodes based on CSS selectors methods.
