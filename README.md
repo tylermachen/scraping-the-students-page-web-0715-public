@@ -29,10 +29,9 @@ Now, that you've read the guide lines feel free to disregard any or all of them 
 Nokogiri is a ruby gem that is designed specifically for scraping websites.  Nokogiri will parse the infromation into XML nodes, which will allow you to move through the document by selecting nodes based on CSS selectors methods.
 
 ####This lab assumes you have done the assigned reading on Nokogiri, here are the links in case you need refeshing.
-
-[Scraping Kick Starter tutorial](https://github.com/flatiron-school-students/scraping-kickstarter-ruby-005)
-[Bastard's guide to scraping](http://ruby.bastardsbook.com/chapters/html-parsing/)
-[Nokogiri's Documentation](http://nokogiri.org/)
+- [Scraping Kick Starter tutorial](https://github.com/flatiron-school-students/scraping-kickstarter-ruby-005)
+- [Bastard's guide to scraping](http://ruby.bastardsbook.com/chapters/html-parsing/)
+- [Nokogiri's Documentation](http://nokogiri.org/)
 
 ###Trouble Shooting Nokogiri
 If you're having problems installing Nokogiri and getting an error that says `libiconv is missing`. Run `ls /usr/lib/ | grep libiconv` in your commandline and you should see something like 
