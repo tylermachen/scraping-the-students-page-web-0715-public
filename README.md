@@ -23,7 +23,7 @@ That being said, hear are some sensible guide lines you should consider (__which
   - It will facilitate the movement of variables between methods.
     - [`attr_accessor`, `attr_writer`, and `attr_reader`](http://stackoverflow.com/questions/4370960/what-is-attr-accessor-in-ruby) will be very helpful if you use a class.
 
-Now, that you've read the guide lines feel free to disregard any or all of them as you see fit.  ___Make it work, make it right, make it fast.___
+Now, that you've read the guide lines feel free to disregard any or all of them as you see fit.  ___Make it work, make it right, make it fast. -[KentBeck](http://c2.com/cgi/wiki?KentBeck)___
 
 ####What you and your group must do.
 One person should fork and clone this repo, creating a team repo and then everyone else clone that fork. When your team is done (done is what you decide it is) submit a pull request from the fork back to master.
