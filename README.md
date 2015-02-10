@@ -30,6 +30,53 @@ Now, that you've read the guide lines feel free to disregard any or all of them 
 
 One person should fork and clone this repo, creating a team repo and then everyone else clone that fork. When your team is done (done is what you decide it is) submit a pull request from the fork back to master.
 
+#### Couple of hints...
+
+There are three components to this lab. You will need to build a command line application (just like you have done with [Guessing CLI]() and [Jukebox CLI]()) and a scraper that will scrape the student page for details that you feel are pertinent. Additionally, you can create a object-oriented student class if you're feeling bold!
+
+For the __command line__ component, you could go implement something like this...
+
+```
+# bin/run_student_cli
+
+student_hash = create_student_hash
+run(student_hash)
+```
+
+```
+# lib/student_cli.rb
+
+def run(student_hash)
+  puts "Welcome to the Flatiron-007 Student Page!"
+  help
+  command = nil
+  while command != 'exit'
+    command = gets.downcase.strip
+
+    ...
+  end
+end
+```
+
+And then for the __scraper__ component...
+
+```
+# lib/scraper.rb
+
+def create_student_hash
+  html = open('http://ruby007.students.flatironschool.com/')
+  profile_data = Nokogiri::HTML(html)  
+  students = {}
+
+  profile_data.css("div.big-comment h3 a").each_with_index do |student,i|
+
+    ...organize data into respective key-value pairs...
+
+  end
+  students
+end
+```
+
 ### Nokogiri
 
 Nokogiri is a ruby gem that is designed specifically for scraping websites.  Nokogiri will parse the infromation into XML nodes, which will allow you to move through the document by selecting nodes based on CSS selectors methods.
