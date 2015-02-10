@@ -77,6 +77,8 @@ def create_student_hash
 end
 ```
 
+How you want to approach the scraping project is _completely_ up to you, but if you're absolutely stuck, this is a good model to follow. If you're still unsure how to proceed, please come find a TA for help! This is one of the first projects that's somewhat self-directed within your groups, so it is definitely a big challenge.
+
 ### Nokogiri
 
 Nokogiri is a ruby gem that is designed specifically for scraping websites.  Nokogiri will parse the infromation into XML nodes, which will allow you to move through the document by selecting nodes based on CSS selectors methods.
