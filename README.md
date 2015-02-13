@@ -18,7 +18,7 @@ That being said, here are some sensible guidelines you should consider (__which 
   - It's okay to have a method that delegates tasks to other methods.
 - Make sure you're keeping track of your data.
   - You are not going to be persisting (storing in a database) any of the data you scrape, so storing them in variables is a must.
-  - Remeber that once a variable is out of scope or it's value overwritten, it's gone.
+  - Remember that once a variable is out of scope or it's value overwritten, it's gone.
 - Try to make a class
   - It will keep your code cleaner.
   - It will facilitate the movement of variables between methods.
