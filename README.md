@@ -64,7 +64,7 @@ And then for the __scraper__ component...
 # lib/scraper.rb
 
 def create_student_hash
-  html = open('http://ruby007.students.flatironschool.com/')
+  html = open('http://web0415.students.flatironschool.com/')
   profile_data = Nokogiri::HTML(html)  
   students = {}
 
