@@ -1,8 +1,4 @@
----
-tags: nokogiri, scraping, web crawling
-languages: Ruby
-resources: 4
----
+
 
 ## Scraping the Students Website
 
