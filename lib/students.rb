@@ -2,7 +2,9 @@
 require 'nokogiri'
 require 'open-uri'
 require 'pry'
+require 'faker'
 
+=begin
 def create_student_hash
   html = open('http://web0715.students.flatironschool.com/')
   profile_data = Nokogiri::HTML(html)
@@ -25,6 +27,7 @@ def create_student_hash
   end
   students
 end
+=end
 
 # create student
 class Student
@@ -39,14 +42,17 @@ class Student
   end
 end
 
-create_student_hash
+students = {}
+students["John Smith"] = Student.new('John Smith', nil,'Living the good life', 'Harvard', 'CEO')
+students["Seymore Butts"] = Student.new('Seymore Butts',nil, 'Living the best life!', 'MIT', 'Chicken Sexer')
+students["Bill Bonovan"] = Student.new('Bill Bonovan', nil, 'Living an even better life.', 'Yale', 'Jedi Master')
 
 ###### iterate over all student objects and add them to an array
 # steven = Student.new(name, tagline, bio)
 
 ###### METHODS FOR CLI
 class Directory
-  attr_reader :students
+  attr_accessor :students
 
   def initialize(students)
     @students = students
@@ -54,7 +60,7 @@ class Directory
   end
 
   def prompt
-    "// "
+    print "> "
   end
 
   def welcome
@@ -65,7 +71,13 @@ class Directory
   end
 
   def get_user_input
+    prompt
     input = gets.chomp.downcase
+    case input
+      when 'list' then list
+      when 'help' then help
+      else abort
+    end
   end
 
   def help
@@ -77,12 +89,15 @@ class Directory
   end
 
   def list
+    puts "All Students"
+    puts "------------"
+    @students.keys.each.with_index(1) do |student, index|
+      puts "#{index}. #{student} - #{@students[student].work} - #{@students[student].education}"
+    end
+    # puts "\nPlease enter a student number or name to see student profile."
   end
 
-  def student
-  end
-
-  def exit_jukebox
+  def exit_directory
     puts "\nTake care.\n\n"
     abort
   end
@@ -92,24 +107,18 @@ class Directory
     print "Type 'help' for a list of available commands.\n"
   end
 
-  def run
-    puts "\nPlease enter a command:"
-    print prompt
-    input = get_user_input
-    case input
-      when 'help' then help
-      when 'list' then list
-      when 'exit' then exit_jukebox
-      else invalid_command
-    end
+  def school
   end
 
   def engine
     welcome
+    help
     while true
-    ## run the program
+      get_user_input
     end
+    exit_directory
   end
 end
 
-# directory = Directory.new(student_object_array)
+directory = Directory.new(students)
+directory
