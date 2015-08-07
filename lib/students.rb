@@ -4,10 +4,11 @@ require 'pry'
 
 class Student
   attr_accessor :name, :profile_url, :tagline, :bio, :work, :education
+  attr_reader :default
   @@count = 0
-  @default = "No info available."
+  @@default = "unavailable"
 
-  def initialize(name, profile_url, tagline = @default, bio = @default, work = @default, education = @default)
+  def initialize(name, profile_url, tagline = @@default, bio = @@default, work = @@default, education = @@default)
     @name = name
     @profile_url = profile_url
     @tagline = tagline
@@ -70,22 +71,21 @@ class StudentDirectory
     puts "The directory accepts the following commands:"
     puts "---------------------------------------------"
     puts "» help : displays this help message"
-    puts "» list : displays a list of all students"
+    puts "» list : displays a list of all students (and profiles)"
     puts "» home : returns to the welcome screen"
     puts "» exit : exits the program"
   end
 
   def list
     puts "\n"
-    puts "(#{Student.count}) student(s) returned"
     puts "✶~--------------------~✶"
-    puts "│       Students       │"
+    puts "      Students (#{Student.count})      "
     puts "✶~--------------------~✶"
-    puts "Enter a student number below to view a profile!"
+    puts "\n"
+    puts Student.count > 0 ? "Enter a student number below to view their profile!" : "The directory is empty."
     puts "\n"
     @students.keys.each.with_index(1) do |student, index|
-      puts "(#{index}) #{student}"
-      # puts "(#{index}) #{student} - #{@students[student].work} - #{@students[student].education}"
+      puts index > 9 ? "(#{index}) #{student}" : "(#{index})  #{student}"
     end
   end
 
@@ -94,14 +94,18 @@ class StudentDirectory
     @students.keys.each.with_index(1) do |student, index|
       if student_index.to_i == index
         puts "✶~----------------------------------~✶"
-        puts "     #{@students[student].name}'s Profile"
+        puts "       #{@students[student].name}'s Profile"
         puts "✶~----------------------------------~✶"
         puts "\n"
-        puts "Profile URL: #{@students[student].profile_url}"
-        puts "Tagline: #{@students[student].tagline}"
-        puts "Work Experience: #{@students[student].work}"
-        puts "Education: #{@students[student].education}"
-        puts "Bio: #{@students[student].bio}"
+        puts "Name: #{@students[student].name}\n\n"
+        puts "Tagline: #{@students[student].tagline}\n\n"
+        puts "Work Experience: #{@students[student].work}\n\n"
+        puts "Education: #{@students[student].education}\n\n"
+        puts "Biography:"
+        puts "----------"
+        puts "#{@students[student].bio}"
+        puts "----------"
+        puts "web0715.students.flatironschool.com/#{@students[student].profile_url}"
       else
         next
       end
@@ -110,7 +114,7 @@ class StudentDirectory
 
   def goodbye
     puts "\n"
-    puts "Later."
+    puts "Goodbye."
     puts "\n"
     abort
   end
@@ -127,18 +131,25 @@ def create_student_hash
   students = {}
 
   profile_data.css("div.big-comment h3 a").each do |student|
-    name = student.text
-    profile_url = student.values.first
+    @name = student.text
+    @profile_url = student.values.first
 
-    student_html = open('http://web0715.students.flatironschool.com/' + profile_url)
-    student_profile_data = Nokogiri::HTML(student_html)
+    begin # 404 error handling
+      student_html = open('http://web0715.students.flatironschool.com/' + @profile_url)
+      student_profile_data = Nokogiri::HTML(student_html)
 
-    tagline = student_profile_data.css("div.textwidget h3").text
-    work = student_profile_data.css("div.services h4").text
-    education = student_profile_data.css("div.services ul li").text
-    bio = student_profile_data.css("div.services p").first.text.strip
+      tagline = student_profile_data.css("div.textwidget h3").text
+      work = student_profile_data.css("div.services h4").text
+      education = student_profile_data.css("div.services ul li").text
+      bio = student_profile_data.css("div.services p").first.text.strip
 
-    students[name] = Student.new(name, profile_url, tagline, bio, work, education)
+      students[@name] = Student.new(@name, @profile_url, tagline, bio, work, education)
+    rescue OpenURI::HTTPError => e
+      if e.message == '404 Not Found'
+        students[@name] = Student.new(@name, @profile_url)
+        next
+      end
+    end
   end
 
   students
