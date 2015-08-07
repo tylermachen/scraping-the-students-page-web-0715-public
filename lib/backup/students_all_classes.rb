@@ -1,6 +1,5 @@
 require 'nokogiri'
 require 'open-uri'
-require 'pry'
 
 class Student
   attr_accessor :name, :profile_url, :tagline, :bio, :work, :education
@@ -24,7 +23,7 @@ class Student
 end
 
 class StudentDirectory
-  attr_accessor :students
+  attr_reader :students
 
   def initialize(students)
     @students = students
@@ -125,34 +124,47 @@ class StudentDirectory
   end
 end
 
-def create_student_hash
-  html = open('http://web0715.students.flatironschool.com/')
-  profile_data = Nokogiri::HTML(html)
-  students = {}
+class Scraper
+  attr_reader :students
 
-  profile_data.css("div.big-comment h3 a").each do |student|
-    @name = student.text
-    @profile_url = student.values.first
+  def initialize(url)
+    @url = url
+    @students = {}
+    create_student_hash
+  end
 
-    begin # 404 error handling
-      student_html = open('http://web0715.students.flatironschool.com/' + @profile_url)
-      student_profile_data = Nokogiri::HTML(student_html)
+  def get_student_index_page
+    html = open(@url)
+    Nokogiri::HTML(html)
+  end
 
-      tagline = student_profile_data.css("div.textwidget h3").text
-      work = student_profile_data.css("div.services h4").text
-      education = student_profile_data.css("div.services ul li").text
-      bio = student_profile_data.css("div.services p").first.text.strip
+  def create_student_hash
+    profile_data = get_student_index_page
 
-      students[@name] = Student.new(@name, @profile_url, tagline, bio, work, education)
-    rescue OpenURI::HTTPError => e
-      if e.message == '404 Not Found'
-        students[@name] = Student.new(@name, @profile_url)
-        next
+    profile_data.css("div.big-comment h3 a").each do |student|
+      @name = student.text
+      @profile_url = student.values.first
+
+      begin # 404 error handling
+        student_html = open('http://web0715.students.flatironschool.com/' + @profile_url)
+        student_profile_data = Nokogiri::HTML(student_html)
+
+        tagline = student_profile_data.css("div.textwidget h3").text
+        work = student_profile_data.css("div.services h4").text
+        education = student_profile_data.css("div.services ul li").text
+        bio = student_profile_data.css("div.services p").first.text.strip
+
+        @students[@name] = Student.new(@name, @profile_url, tagline, bio, work, education)
+      rescue OpenURI::HTTPError => e
+        if e.message == '404 Not Found'
+          @students[@name] = Student.new(@name, @profile_url)
+          next
+        end
       end
     end
   end
-
-  students
 end
 
-StudentDirectory.new(create_student_hash).run
+student_data = Scraper.new('http://web0715.students.flatironschool.com/').students
+directory = StudentDirectory.new(student_data)
+directory.run
