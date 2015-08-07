@@ -53,3 +53,11 @@ def create_student_hash
   students
 end
 =end
+
+=begin
+# SAMPLE FAKE DATA TO PLAY WITH
+students = {}
+students["John Smith"] = Student.new('John Smith', nil,'Living the good life',nil, 'Harvard', 'CEO')
+students["Seymore Butts"] = Student.new('Seymore Butts',nil, 'Living the best life!',nil, 'MIT', 'Chicken Sexer')
+students["Bill Bonovan"] = Student.new('Bill Bonovan', nil, 'Living an even better life.',nil, 'Yale', 'Jedi Master')
+=end
